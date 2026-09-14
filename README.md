@@ -81,19 +81,22 @@ Main (CLI)  →  LibraryService (business logic)  →  FileStorageManager (persi
 
 Shows every domain class, its attributes/methods, and the relationships between them (inheritance, composition, and thrown-exception dependencies).
 
-![Class Diagram](docs/diagrams/class_diagram.png)
+<img width="2836" height="1287" alt="class_diagram" src="https://github.com/user-attachments/assets/3dc959b7-5a95-4697-a717-3c659c8e5201" />
+
 
 ### 2. Use Case Diagram
 
 Shows the Librarian actor and every operation the system supports, including `«include»`/`«extend»` relationships for validation and persistence steps.
+<img width="918" height="975" alt="usecase_diagram" src="https://github.com/user-attachments/assets/8a8e45a0-075c-49ab-98b8-56e23688c6ca" />
 
-![Use Case Diagram](docs/diagrams/usecase_diagram.png)
+
 
 ### 3. Sequence Diagram — Issue Book
 
 Traces the full **Issue Book** flow end to end, including the `alt` fragment covering the exception path when a book is unavailable or a member has hit their borrowing limit.
 
-![Sequence Diagram](docs/diagrams/sequence_diagram.png)
+<img width="2400" height="1520" alt="sequence_diagram" src="https://github.com/user-attachments/assets/d1e554b9-db68-4514-8cff-c50968567648" />
+
 
 ## Project Structure
 
@@ -126,39 +129,32 @@ smart_library_system/
 
 - Java Development Kit (JDK) 17 or later
 - Verify with:
-  ```bash
+
   java -version
   javac -version
-  ```
+
 
 ## How to Set Up and Run
 
 1. **Clone the repository**
-   ```bash
    git clone https://github.com/sakshirathi7001/smart_library_system.git
    cd smart_library_system
-   ```
 
 2. **Compile the project**
 
    Mac/Linux:
-   ```bash
    javac -d out $(find src -name "*.java")
-   ```
 
    Windows (PowerShell):
-   ```powershell
    javac -d out (Get-ChildItem -Recurse -Filter *.java src).FullName
-   ```
 
 3. **Run the application**
-   ```bash
+
    java -cp out Main
-   ```
 
 4. On first run (when there is no existing data), sample data (2 members, 2 books) loads automatically. Use the on-screen menu to add members, add books, issue/return books, and search the catalog.
 
-5. On exit (option `0`), all data is saved to the `data/` folder and reloads automatically on the next run.
+5. On exit (option `0`), all data is saved to the `data/` foldder and reloads automatically on the next run.
 
 ## Usage / Menu Guide
 
