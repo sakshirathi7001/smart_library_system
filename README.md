@@ -2,13 +2,6 @@
 
 A console-based **Java** application for managing library books, members, and borrowing transactions — including automatic overdue fine calculation and CSV-based persistence.
 
-![Language](https://img.shields.io/badge/Language-Java%2017%2B-orange)
-![Type](https://img.shields.io/badge/Type-Console%20Application-blue)
-![Storage](https://img.shields.io/badge/Storage-CSV%20File--based-green)
-![Status](https://img.shields.io/badge/Status-Academic%20Project-lightgrey)
-
----
-
 ## Table of Contents
 
 - [Overview](#overview)
