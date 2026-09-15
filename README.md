@@ -1,212 +1,175 @@
-# 📚 Smart Library & Fine Management System
+# Smart Library System
 
-A console-based **Java** application for managing library books, members, and borrowing transactions — including automatic overdue fine calculation and CSV-based persistence.
+A simple **Java-based Library Management System** developed as a console application. It allows a library to manage books, members, and borrowing/returning of books.
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [System Architecture](#system-architecture)
-- [UML Diagrams](#uml-diagrams)
-  - [Class Diagram](#1-class-diagram)
-  - [Use Case Diagram](#2-use-case-diagram)
-  - [Sequence Diagram](#3-sequence-diagram--issue-book)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [How to Set Up and Run](#how-to-set-up-and-run)
-- [Usage / Menu Guide](#usage--menu-guide)
-- [Data Persistence](#data-persistence)
-- [Testing Instructions](#testing-instructions)
-- [Future Enhancements](#future-enhancements)
-- [Project Report](#project-report)
-
----
-
-## Overview
-
-This project simulates a library management system where a librarian can register members (students or faculty), maintain a book catalog, issue and return books, and track overdue fines. Data is persisted between runs using CSV files, so nothing is lost when the application restarts.
-
-The system enforces different rules for **students** and **faculty**:
-
-| Member Type | Max Books Allowed | Borrow Duration | Fine Rate (per day late) |
-|---|---|---|---|
-| Student | 3 | 14 days | $2.00 |
-| Faculty | 8 | 30 days | $1.00 |
+The project demonstrates basic **Object-Oriented Programming (OOP)** concepts such as inheritance, polymorphism, encapsulation, abstraction, and exception handling.
 
 ## Features
 
-- **Member Management** — Register students and faculty members, each with different borrowing limits and durations
-- **Book Catalog** — Add books, track total vs. available copies, search by title
-- **Issue/Return System** — Issue books with due dates based on member type, return books with automatic overdue fine calculation
-- **Fine Engine** — Different fine rates for students and faculty via polymorphism (`Member.calculateFine()`)
-- **Persistent Storage** — All data saved to CSV files in `data/` and reloaded automatically on startup
-- **Custom Exception Handling** — Prevents issuing unavailable books or exceeding a member's borrowing limit via `BookNotAvailableException` and `MemberLimitExceededException`
-- **Overdue Reporting** — Lists every transaction that is currently past its due date
+* Add and manage books
+* Register library members
+* Support for different types of members
+
+  * Student
+  * Faculty
+* Issue books to members
+* Return issued books
+* Check book availability
+* Calculate fines for late returns
+* Apply different borrowing rules for different members
+* Save library data using CSV files
+* Handle invalid operations using custom exceptions
 
 ## Technologies Used
 
-- Java (JDK 17+)
-- Java Collections (`HashMap`, `ArrayList`)
-- `java.time.LocalDate` for date handling
-- File I/O for CSV-based persistence
-- Object-Oriented Design — abstraction, inheritance, polymorphism, and custom exceptions
-
-## System Architecture
-
-The application follows a simple layered structure:
-
-
-Main (CLI)  →  LibraryService (business logic)  →  FileStorageManager (persistence)
-                        ↓
-              model classes (Book, Member, Transaction)
-
-
-- **`Main`** — the console entry point; renders the menu and reads user input
-- **`service.LibraryService`** — the single source of truth for books, members, and transactions; owns all business rules (availability checks, borrowing limits, fine calculation dispatch)
-- **`util.FileStorageManager`** — reads and writes the three CSV files under `data/`
-- **`model`** — plain data/domain classes: `Book`, `Member` (abstract), `StudentMember`, `FacultyMember`, `Transaction`
-- **`exception`** — checked exceptions `BookNotAvailableException` and `MemberLimitExceededException`, thrown by `LibraryService.issueBook()` and handled in `Main`
-
-## UML Diagrams
-
-### 1. Class Diagram
-
-Shows every domain class, its attributes/methods, and the relationships between them (inheritance, composition, and thrown-exception dependencies).
-
-<img width="2836" height="1287" alt="class_diagram" src="https://github.com/user-attachments/assets/3dc959b7-5a95-4697-a717-3c659c8e5201" />
-
-
-### 2. Use Case Diagram
-
-Shows the Librarian actor and every operation the system supports, including `«include»`/`«extend»` relationships for validation and persistence steps.
-<img width="918" height="975" alt="usecase_diagram" src="https://github.com/user-attachments/assets/8a8e45a0-075c-49ab-98b8-56e23688c6ca" />
-
-
-
-### 3. Sequence Diagram — Issue Book
-
-Traces the full **Issue Book** flow end to end, including the `alt` fragment covering the exception path when a book is unavailable or a member has hit their borrowing limit.
-
-<img width="2400" height="1520" alt="sequence_diagram" src="https://github.com/user-attachments/assets/d1e554b9-db68-4514-8cff-c50968567648" />
-
+* **Language:** Java
+* **Programming Concepts:** OOP, Collections, Exception Handling, File Handling
+* **Data Storage:** CSV files
+* **IDE:** IntelliJ IDEA / Eclipse / VS Code (any Java-supported IDE)
 
 ## Project Structure
 
+```text
 smart_library_system/
+│
 ├── src/
-│   ├── Main.java                          # CLI entry point
+│   ├── Main.java
+│   │
 │   ├── model/
 │   │   ├── Book.java
-│   │   ├── Member.java                    # abstract base class
+│   │   ├── Member.java
 │   │   ├── StudentMember.java
 │   │   ├── FacultyMember.java
 │   │   └── Transaction.java
+│   │
+│   ├── service/
+│   │   └── LibraryService.java
+│   │
 │   ├── exception/
 │   │   ├── BookNotAvailableException.java
 │   │   └── MemberLimitExceededException.java
-│   ├── service/
-│   │   └── LibraryService.java            # core business logic
+│   │
 │   └── util/
-│       └── FileStorageManager.java        # CSV persistence
-├── data/                                  # auto-generated CSV data files
-│   ├── books.csv
-│   ├── members.csv
-│   └── transactions.csv
-├── docs/
-│   └── diagrams/                          # class / use case / sequence diagrams
-├── statement.md                           # original problem statement
+│       └── FileStorageManager.java
+│
+├── data/
+│   └── CSV data files
+│
 └── README.md
+```
 
-## Prerequisites
+## How the System Works
 
-- Java Development Kit (JDK) 17 or later
-- Verify with:
+The system keeps information about books, members, and transactions.
 
-  java -version
-  javac -version
+### Books
 
+Each book contains information such as its ID, title, author, and availability status.
 
-## How to Set Up and Run
+A book can be issued only when it is available. After it is returned, it becomes available again.
 
-1. **Clone the repository**
-   git clone https://github.com/sakshirathi7001/smart_library_system.git
-   cd smart_library_system
+### Members
 
-2. **Compile the project**
+The system supports different types of library members.
 
-   Mac/Linux:
-   javac -d out $(find src -name "*.java")
+`Member` contains the common properties and operations shared by members. `StudentMember` and `FacultyMember` extend it and can have different borrowing limits and fine rules.
 
-   Windows (PowerShell):
-   javac -d out (Get-ChildItem -Recurse -Filter *.java src).FullName
+This is where **inheritance and polymorphism** are used in the project.
 
-3. **Run the application**
+### Transactions
 
-   java -cp out Main
+A transaction records the issue and return of a book. It can also be used to determine whether a fine needs to be charged.
 
-4. On first run (when there is no existing data), sample data (2 members, 2 books) loads automatically. Use the on-screen menu to add members, add books, issue/return books, and search the catalog.
+## Exception Handling
 
-5. On exit (option `0`), all data is saved to the `data/` foldder and reloads automatically on the next run.
+The project uses custom exceptions for situations where an operation cannot be completed.
 
-## Usage / Menu Guide
+For example:
 
+* `BookNotAvailableException` — used when someone tries to issue a book that is already issued.
+* `MemberLimitExceededException` — used when a member has reached their borrowing limit.
 
-===== SMART LIBRARY SYSTEM =====
-1. Add Member
-2. Add Book
-3. Issue Book
-4. Return Book
-5. Search Book by Title
-6. View Overdue Transactions
-7. List All Books
-8. List All Members
-0. Exit
+This helps keep errors separate from the normal program flow.
 
+## Data Storage
 
-| Option | Action |
-|---|---|
-| 1 | Register a new member as a Student or Faculty |
-| 2 | Add a new book (or additional copies) to the catalog |
-| 3 | Issue a book to a member — validates availability and borrowing limit |
-| 4 | Return a book by transaction ID — calculates any overdue fine |
-| 5 | Search the catalog by a title keyword (case-insensitive) |
-| 6 | List all transactions that are currently overdue |
-| 7 | Print the full book catalog with available/total copies |
-| 8 | Print all registered members |
-| 0 | Save all data to CSV and exit |
+The project uses CSV files to store the library data.
 
-## Data Persistence
+This allows the data to remain available after the program is closed and started again. The required data files can be created/updated when the application saves its data.
 
-All state is stored as plain CSV under `data/`, created automatically on first save:
+## Running the Project
 
-| File | Columns |
-|---|---|
-| `books.csv` | isbn, title, author, totalCopies, availableCopies |
-| `members.csv` | memberId, name, type (`STUDENT` / `FACULTY`) |
-| `transactions.csv` | transactionId, memberId, isbn, issueDate, dueDate, returnDate (`NULL` if not yet returned) |
+### 1. Clone the repository
 
-Data is loaded back into memory when `LibraryService` is constructed, so the application is fully stateful across runs without any external database.
+```bash
+git clone https://github.com/sakshirathi7001/smart_library_system.git
+```
 
-## Testing Instructions
+### 2. Open the project
 
-Manually verify the following flows:
+Open the project in a Java-supported IDE.
 
-- Add a new student and a new faculty member (option 1) and confirm different borrowing limits/durations apply
-- Add a book with multiple copies (option 2), issue it to a member (option 3), and confirm available copies decrease
-- Attempt to issue a book with 0 available copies — should raise a `BookNotAvailableException` message
-- Attempt to issue more books than a member's limit allows — should raise a `MemberLimitExceededException` message
-- Return a book late (option 4) and confirm the fine is calculated correctly based on member type
-- Exit (option 0) and re-run the program — confirm all previously added data persists
+### 3. Compile the source files
 
-## Future Enhancements
+Make sure Java is installed and configured correctly.
 
-- Migrate from CSV storage to a relational database (e.g., SQLite/MySQL)
-- Add email/SMS notifications for overdue books
-- Add a REST API layer for web-based access
-- Add unit tests (JUnit) covering `LibraryService` and fine-calculation logic
-- Add reservation/holds support for books that are currently unavailable
+### 4. Run the program
 
-## About
+Run:
 
-Java console app for library management — member tracking, book issue/return, and automatic overdue fine calculation.
+```text
+Main.java
+```
+
+The application can then be used through the console menu.
+
+## OOP Concepts Used
+
+The project was designed to practice the following OOP concepts:
+
+| Concept            | Example                                                                  |
+| ------------------ | ------------------------------------------------------------------------ |
+| Encapsulation      | Classes keep their data and related methods together                     |
+| Inheritance        | `StudentMember` and `FacultyMember` extend `Member`                      |
+| Polymorphism       | Member-specific behavior can be handled through the parent `Member` type |
+| Abstraction        | Common member functionality is separated from specific member types      |
+| Exception Handling | Custom exceptions handle invalid library operations                      |
+
+## Example Operations
+
+The system can perform operations such as:
+
+```text
+1. Add Book
+2. Add Member
+3. Display Books
+4. Display Members
+5. Issue Book
+6. Return Book
+7. Check Book Availability
+8. Exit
+```
+
+The exact options may vary depending on the current implementation.
+
+## Future Improvements
+
+Some features that could be added later include:
+
+* Search and filter books
+* Login system for librarians
+* Database support using MySQL
+* Graphical user interface
+* Book reservation system
+* More detailed transaction history
+* Reports for issued and overdue books
+
+## Author
+
+**Sakshi Rathi**
+
+GitHub: https://github.com/sakshirathi7001/smart_library_system
+
+## License
+
+This project was created as an academic/project exercise for learning Java and Object-Oriented Programming.
