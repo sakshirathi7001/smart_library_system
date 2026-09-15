@@ -214,12 +214,6 @@ Manually verify the following flows:
 - Add unit tests (JUnit) covering `LibraryService` and fine-calculation logic
 - Add reservation/holds support for books that are currently unavailable
 
-## Project Report
-
-A full 15-section project report — covering the problem statement, requirements, design, implementation details, testing, and conclusion — is available at [`docs/Smart_Library_System_Project_Report.pdf`](docs/Smart_Library_System_Project_Report.pdf).
-
----
-
 ## About
 
 Java console app for library management — member tracking, book issue/return, and automatic overdue fine calculation.
