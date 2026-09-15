@@ -170,7 +170,7 @@ Some features that could be added later include:
 
 GitHub: https://github.com/sakshirathi7001/smart_library_system
 
-Project Report: https://github.com/sakshirathi7001/report/SMART LIBRARY.docx
+Project Report:https://github.com/sakshirathi7001/smart_library_system/blob/main/report/SMART%20LIBRARY.docx
 
 ## License
 
